@@ -4,24 +4,21 @@
  *
  * @author CSC 143
  */
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import javax.swing.JFrame;
-import javax.swing.Timer;
-
 public class EventController extends KeyAdapter implements ActionListener {
 
+    private static final double PIECE_MOVE_TIME = 0.8; // wait 0.8 s every time
     private Game game; // current game: grid and current piece
     private Timer timer;
-
-    private static final double PIECE_MOVE_TIME = 0.8; // wait 0.8 s every time
     // the piece moves down
     // increase to slow it
     // down
-
     private boolean gameOver;
 
     /**
@@ -62,6 +59,8 @@ public class EventController extends KeyAdapter implements ActionListener {
                 case KeyEvent.VK_RIGHT:
                     handleMove(Direction.RIGHT);
                     break;
+                case KeyEvent.VK_UP:
+                    handleMove(Direction.UP);
             }
         }
     }

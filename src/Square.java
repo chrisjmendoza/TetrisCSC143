@@ -1,5 +1,4 @@
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 
 /**
  * One Square on our Tetris Grid or one square in our Tetris game piece
@@ -7,20 +6,16 @@ import java.awt.Graphics;
  * @author CSC 143
  */
 public class Square {
-    private Grid grid; // the environment where this Square is
-
-    private int row, col; // the grid location of this Square
-
-    private boolean ableToMove; // true if this Square can move
-
-    private Color color; // the color of this Square
-
-    // possible move directions are defined by the Game class
-
     // dimensions of a Square
     public static final int WIDTH = 20;
-
     public static final int HEIGHT = 20;
+    private Grid grid; // the environment where this Square is
+    private int row, col; // the grid location of this Square
+    private boolean ableToMove; // true if this Square can move
+
+    // possible move directions are defined by the Game class
+    private boolean ableToRotate; // true if this Square can move based on rotation
+    private Color color; // the color of this Square
 
     /**
      * Creates a square
@@ -30,9 +25,10 @@ public class Square {
      * @param col    the column of this Square in the Grid
      * @param c      the Color of this Square
      * @param mobile true if this Square can move
+     * @param rotate true if this Square can rotate
      * @throws IllegalArgumentException if row and col not within the Grid
      */
-    public Square(Grid g, int row, int col, Color c, boolean mobile) {
+    public Square(Grid g, int row, int col, Color c, boolean mobile, boolean rotate) {
         if (row < 0 || row > Grid.HEIGHT - 1)
             throw new IllegalArgumentException("Invalid row =" + row);
         if (col < 0 || col > Grid.WIDTH - 1)
@@ -44,6 +40,7 @@ public class Square {
         this.col = col;
         color = c;
         ableToMove = mobile;
+        ableToRotate = rotate;
     }
 
     /**
@@ -54,10 +51,26 @@ public class Square {
     }
 
     /**
+     * For rotation, setter is needed to change square position
+     * @param row
+     */
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    /**
      * Returns the column for this Square
      */
     public int getCol() {
         return col;
+    }
+
+    /**
+     * For rotation, setter is needed to change square position
+     * @param col
+     */
+    public void setCol(int col) {
+        this.col = col;
     }
 
     /**
@@ -89,6 +102,17 @@ public class Square {
         return move;
     }
 
+    public boolean canRotate(int col, int row) {
+        if (!ableToRotate) return false;
+
+        boolean rotate = true;
+        if ((col < 0 || col >= HEIGHT) && (row < 0 || row >= WIDTH)) {
+            rotate = false;
+        }
+
+        return rotate;
+    }
+
     /**
      * moves this square in the given direction if possible.
      * <p>
@@ -117,12 +141,16 @@ public class Square {
     }
 
     /**
-     * Changes the color of this square
-     *
-     * @param c the new color
+     * Rotates this square in a clockwise direction if possible
+     * <p>
+     *     The square will not move if the direction is blocked or if the square is
+     *     unable to rotate at this time.
      */
-    public void setColor(Color c) {
-        color = c;
+    public void rotate() {
+        if (canRotate(getCol(), getRow())) {
+
+
+        }
     }
 
     /**
@@ -130,6 +158,15 @@ public class Square {
      */
     public Color getColor() {
         return color;
+    }
+
+    /**
+     * Changes the color of this square
+     *
+     * @param c the new color
+     */
+    public void setColor(Color c) {
+        color = c;
     }
 
     /**

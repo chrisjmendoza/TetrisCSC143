@@ -6,15 +6,13 @@ import java.awt.*;
  */
 public abstract class AbstractPiece implements Piece {
 
-    protected boolean ableToMove; // can this piece move
-
-    protected Square[] square; // the squares that make up this piece
-
-    // Made up of PIECE_COUNT squares
-    protected Grid grid; // the board this piece is on
-
     // number of squares in one Tetris game piece
     protected static final int PIECE_COUNT = 4;
+    protected boolean ableToMove; // can this piece move
+    protected boolean ableToRotate; // can this piece rotate
+    protected Square[] square; // the squares that make up this piece
+    // Made up of PIECE_COUNT squares
+    protected Grid grid; // the board this piece is on
 
     public void draw(Graphics g) {
         for (int i = 0; i < PIECE_COUNT; i++) {
@@ -77,7 +75,77 @@ public abstract class AbstractPiece implements Piece {
         return answer;
     }
 
+    public boolean canRotate() {
+        if (!ableToRotate) return false;
+
+        // Each square must be able to rotate in that direction
+        boolean answer = true;
+
+        // store current piece coordinates
+        int[] xOrigin = new int[PIECE_COUNT];
+        int[] yOrigin = new int[PIECE_COUNT];
+
+        int[] rotatedX = new int[PIECE_COUNT];
+        int[] rotatedY = new int[PIECE_COUNT];
+
+        for (int i = 0; i < PIECE_COUNT; i++) {
+            xOrigin[i] = square[i].getCol();
+            yOrigin[i] = square[i].getRow();
+        }
+
+        for (int i = 0; i < PIECE_COUNT; i++) {
+
+            int tempX = xOrigin[i] - xOrigin[1];
+            int tempY = yOrigin[i] - yOrigin[1];
+
+            rotatedX[i] = (int) Math.round(tempX * Math.cos(Math.PI / 2) - tempY * Math.sin(Math.PI / 2));
+            rotatedY[i] = (int) Math.round(tempX * Math.sin(Math.PI / 2) + tempY * Math.cos(Math.PI / 2));
+
+            rotatedX[i] += xOrigin[i];
+            rotatedY[i] += yOrigin[i];
+        }
+
+        for (int i = 0; i < PIECE_COUNT; i++) {
+            answer = answer && square[i].canRotate(rotatedX[i], rotatedY[i]);
+            if (!answer) break;
+        }
+
+        return answer;
+    }
+
     public void rotate() {
+        if (canRotate()) {
+            // store current piece coordinates
+            int[] xOrigin = new int[PIECE_COUNT];
+            int[] yOrigin = new int[PIECE_COUNT];
+
+            int[] rotatedX = new int[PIECE_COUNT];
+            int[] rotatedY = new int[PIECE_COUNT];
+
+            for (int i = 0; i < PIECE_COUNT; i++) {
+                xOrigin[i] = square[i].getCol();
+                yOrigin[i] = square[i].getRow();
+            }
+
+            for (int i = 0; i < PIECE_COUNT; i++) {
+
+                int tempX = xOrigin[i] - xOrigin[1];
+                int tempY = yOrigin[i] - yOrigin[1];
+
+                rotatedX[i] = (int) Math.round(tempX * Math.cos(Math.PI / 2) - tempY * Math.sin(Math.PI / 2));
+                rotatedY[i] = (int) Math.round(tempX * Math.sin(Math.PI / 2) + tempY * Math.cos(Math.PI / 2));
+
+                rotatedX[i] += xOrigin[1];
+                rotatedY[i] += yOrigin[1];
+
+                square[i].setCol(rotatedX[i]);
+                square[i].setRow(rotatedY[i]);
+
+            }
+
+        } else {
+            ableToRotate = false;
+        }
 
     }
 

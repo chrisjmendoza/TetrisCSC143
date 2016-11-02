@@ -1,6 +1,4 @@
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.*;
 
 /**
  * An L-Shape piece in the Tetris Game.
@@ -35,11 +33,12 @@ public class BarShape extends AbstractPiece {
         grid = g;
         square = new Square[PIECE_COUNT];
         ableToMove = true;
+        ableToRotate = true;
 
         // Create the squares
-        square[0] = new Square(g, r, c - 1, Color.CYAN, true);
-        square[1] = new Square(g, r, c, Color.CYAN, true);
-        square[2] = new Square(g, r, c + 1, Color.CYAN, true);
-        square[3] = new Square(g, r, c + 2, Color.CYAN, true);
+        square[0] = new Square(g, r, c - 1, Color.CYAN, true, true);
+        square[1] = new Square(g, r, c, Color.CYAN, true, true);
+        square[2] = new Square(g, r, c + 1, Color.CYAN, true, true);
+        square[3] = new Square(g, r, c + 2, Color.CYAN, true, true);
     }
 }

@@ -1,6 +1,4 @@
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.*;
 import java.util.Random;
 
 /**
@@ -28,7 +26,7 @@ public class Game {
     public Game(Tetris display) {
         grid = new Grid();
         this.display = display;
-        piece = new LShape(1, Grid.WIDTH / 2 - 1, grid);
+        randPiece();
         isOver = false;
     }
 
@@ -53,22 +51,15 @@ public class Game {
      */
     public void movePiece(Direction direction) {
         if (piece != null) {
-            piece.move(direction);
+            if (direction == Direction.UP) {
+                piece.rotate();
+            } else {
+                piece.move(direction);
+            }
         }
         updatePiece();
         display.update();
         grid.checkRows();
-    }
-
-    /**
-     * Rotates the piece
-     */
-    public void rotatePiece() {
-        if (piece != null) {
-            piece.rotate();
-        }
-        updatePiece();
-        display.update();
     }
 
     /**
@@ -97,26 +88,38 @@ public class Game {
         return false;
     }
 
+    private Piece randPiece() {
+        Random rand = new Random();
+        switch (rand.nextInt(7)) {
+            case 0:
+                piece = new LShape(1, Grid.WIDTH / 2 - 1, grid);
+                break;
+            case 1:
+                piece = new ZShape(1, Grid.WIDTH / 2 - 1, grid);
+                break;
+            case 2:
+                piece = new JShape(1, Grid.WIDTH / 2 - 1, grid);
+                break;
+            case 3:
+                piece = new SquareShape(1, Grid.WIDTH / 2 - 1, grid);
+                break;
+            case 4:
+                piece = new TShape(1, Grid.WIDTH / 2 - 1, grid);
+                break;
+            case 5:
+                piece = new SShape(1, Grid.WIDTH / 2 - 1, grid);
+                break;
+            case 6:
+                piece = new BarShape(1, Grid.WIDTH / 2 - 1, grid);
+                break;
+        }
+        return piece;
+    }
+
     /** Updates the piece */
     private void updatePiece() {
         if (piece == null) {
-            int rand = (int) (Math.random() * 7);
-            switch (rand) {
-                case 1:  piece = new LShape(1, Grid.WIDTH/2 -1, grid);
-                    break;
-                case 2:  piece = new ZShape(1, Grid.WIDTH/2 -1, grid);
-                    break;
-                case 3:  piece = new JShape(1, Grid.WIDTH/2 -1, grid);
-                    break;
-                case 4:  piece = new SquareShape(1, Grid.WIDTH/2 -1, grid);
-                    break;
-                case 5:  piece = new TShape(1, Grid.WIDTH/2 -1, grid);
-                    break;
-                case 6:  piece = new SShape(1, Grid.WIDTH/2 -1, grid);
-                    break;
-                case 7:  piece = new BarShape(1, Grid.WIDTH/2 - 1, grid);
-                    break;
-            }
+            randPiece();
         }
 
         // set Grid positions corresponding to frozen piece

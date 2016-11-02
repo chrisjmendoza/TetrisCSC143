@@ -1,6 +1,4 @@
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.*;
 
 /**
  * A Z-Shape piece in the Tetris Game.
@@ -35,11 +33,12 @@ public class ZShape extends AbstractPiece {
         grid = g;
         square = new Square[PIECE_COUNT];
         ableToMove = true;
+        ableToRotate = true;
 
         // Create the squares
-        square[0] = new Square(g, r, c - 1, Color.RED, true);
-        square[1] = new Square(g, r, c, Color.RED, true);
-        square[2] = new Square(g, r + 1, c, Color.RED, true);
-        square[3] = new Square(g, r + 1, c + 1, Color.RED, true);
+        square[0] = new Square(g, r, c - 1, Color.RED, true, true);
+        square[1] = new Square(g, r, c, Color.RED, true, true);
+        square[2] = new Square(g, r + 1, c, Color.RED, true, true);
+        square[3] = new Square(g, r + 1, c + 1, Color.RED, true, true);
     }
 }

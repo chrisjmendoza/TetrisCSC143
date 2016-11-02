@@ -35,7 +35,7 @@ public class Grid {
         // put squares in the board
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
-                board[row][col] = new Square(this, row, col, EMPTY, false);
+                board[row][col] = new Square(this, row, col, EMPTY, false, false);
 
             }
         }
